@@ -1,0 +1,117 @@
+<HTML>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <title>Incremental Test</title>
+    </head>
+    <body style="background-color: #202020;">
+        <div class="box">
+            <div style="background: linear-gradient(to right, rgb(0, 100, 0), rgb(125, 255, 125));">
+                <span style="font-weight: bold; color: white; font-family: 'NormalFontBold';">Resources</span>
+            </div>
+            <span><img src="images/astrafold_icon.png"> Astrafolds: <span id="astrafolds" style="display: inline;">0</span></span>
+            <span style="display: none;" id="afe_display"><img src="images/extractor_icon.png"> Extractors: <span id="afe" style="display: inline;">0</span></span>
+        </div>
+
+        <div class="box weapon-box" style="display: none;" id="weapon">
+            <div style="background: linear-gradient(to right, rgb(0, 100, 0), rgb(125, 255, 125));">
+                <span style="font-weight: bold; color: white; font-family: 'NormalFontBold';" >Weapon</span>
+            </div>
+            <img src="images/tier1-weapon.png" width="64" height="64" style="translate: 100%; display:block" id="weapon-img">
+            <hr>
+            <span style="color: dimgrey;">This weapon may grant you power through your adventure</span>
+            <button class="multiline-button" onclick="upgradeWeapon()">
+                <span style="font-weight: bold;" >Upgrade weapon</span>
+                <span>Costs 2,000 astrafolds</span>
+            </button>
+        </div>
+
+        <!-- buttons here -->
+
+        <button class="multiline-button" onclick="addAF(1)">
+            <span>Gather Astrafolds</span>
+        </button>
+
+        <button class="multiline-button" onclick="buyAFE()">
+            <span>Build an astrafold extractor</span>
+            <span id="afe_cost">Costs 10 astrafolds</span>
+        </button>
+
+        <button class="multiline-button" onclick="buyWeapon()" id="weapon-buy" style="display: none;" >
+            <span>Get your first weapon</span>
+            <span>Costs 200 astrafolds</span>
+        </button>
+
+        <script src="script/break_eternity.js"></script>
+        <script>
+            var astrafolds = new Decimal(0);
+            var af_extractors = new Decimal(0);
+            var afe_mul = new Decimal(1);
+            var afe_cost = new Decimal(10);
+            var w_cost = new Decimal (2000);
+            var wc_exp = new Decimal(1);
+
+            function addAF(number) {
+                astrafolds = astrafolds.add(number)
+                document.getElementById("astrafolds").innerHTML = astrafolds;
+            }
+
+            function buyAFE() {
+                var e_par = document.getElementById("afe_display");
+                var weapon_buy = document.getElementById("weapon-buy")
+
+                if (af_extractors.eq(4)) {
+                    weapon_buy.style.display = "block";
+                }
+
+                if (astrafolds.gte(afe_cost)) {
+                    astrafolds = astrafolds.sub(afe_cost)
+                    af_extractors = af_extractors.add(1)
+                    afe_cost = afe_cost.mul(1.3).round()
+                    document.getElementById("astrafolds").innerHTML = astrafolds;
+                    document.getElementById("afe").innerHTML = af_extractors;
+                    
+                    if (e_par.style.display === "none") {
+                        e_par.style.display = "block";
+                    }
+                }
+                document.getElementById("afe_cost").innerHTML = "Costs " + afe_cost + " astrafolds";
+            }
+
+            function buyWeapon() {
+                var e_par = document.getElementById("weapon-buy");
+                var weapon_box = document.getElementById("weapon");
+
+                if (astrafolds.gte(200)) {
+                    astrafolds = astrafolds.sub(200)
+                    afe_mul = afe_mul.add(1)
+                    e_par.style.display = "none"
+                    weapon_box.style.display = "block"
+                    document.getElementById("astrafolds").innerHTML = astrafolds;
+                }
+            }
+
+            function upgradeWeapon() {
+                var img = document.getElementById("weapon-img")
+
+                if (astrafolds.gte(w_cost)) {
+                    astrafolds = astrafolds.sub(w_cost)
+                    w_cost = w_cost.pow(1.5)
+                    wc_exp = wc_exp.add(1)
+
+                    if (img.src === "images/tier1-weapon.png") {
+                        img.src = "images/tier2-weapon.png";
+                    } else if (img.src === "images/tier2-weapon.png") {
+                        img.src = "images/tier3-weapon.png";
+                    }
+
+                    document.getElementById("astrafolds").innerHTML = astrafolds;
+                }
+            }
+
+            setInterval(function() {
+                astrafolds = astrafolds.add(af_extractors.mul(afe_mul.pow(wc_exp)));
+                document.getElementById("astrafolds").innerHTML = astrafolds;
+            }, 1000);
+        </script>
+    </body>
+</HTML>

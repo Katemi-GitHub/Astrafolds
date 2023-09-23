@@ -1,0 +1,80 @@
+img {
+    image-rendering: pixelated;
+    padding-top: 4px;
+}
+
+@font-face{
+    font-family:"NormalFont";
+    font-style:normal;
+    font-weight:400;
+    src:url("fonts/ms_sans_serif.woff") format("woff");
+    src:url("fonts/ms_sans_serif.woff2") format("woff2")
+}
+
+@font-face{
+    font-family:"NormalFontBold";
+    font-style:normal;
+    font-weight:700;
+    src:url("fonts/ms_sans_serif_bold.woff1") format("woff");
+    src:url("fonts/ms_sans_serif_bold.woff2") format("woff2")
+}
+
+@font-face {
+    font-family: "TitleFont";
+    src: url("fonts/alagard.ttf");
+}
+
+body {
+    font-family: "NormalFont";
+}
+
+.multiline-button {
+    font-family: "NormalFont";
+    font-size: 11px;
+    display: block;
+    text-align: center;
+    border: 2px outset #eeeeee;
+    border-bottom: 2px inset #666666;
+    background-color: #d2dcdd;
+    cursor: pointer;
+    margin-bottom: 4px;
+}
+
+.multiline-button span {
+    display: block;
+    margin-bottom: 0px;
+    padding: 2px 4px;
+}
+
+.box {
+    display: block;
+    width: 200px;
+    background-color: #d2dcdd;
+    border: 2px outset #eeeeee;
+    border-bottom: 2px inset #666666;
+    margin-bottom: 10px;
+}
+
+.box span {
+    display: block;
+    font-size: 11px;
+    margin-bottom: 0px;
+    padding: 2px 4px;
+}
+
+.div {
+    display: flex;
+}
+
+.weapon-box {
+    position: fixed;
+    top: 8px;
+    left: 232px;
+}
+
+span#span-title {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
