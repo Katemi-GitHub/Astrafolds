@@ -26,6 +26,7 @@ img {
 
 body {
     font-family: "NormalFont";
+    user-select: none;
 }
 
 .multiline-button {

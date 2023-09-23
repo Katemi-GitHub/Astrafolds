@@ -21,7 +21,7 @@
             <span style="color: dimgrey;">This weapon may grant you power through your adventure</span>
             <button class="multiline-button" onclick="upgradeWeapon()">
                 <span style="font-weight: bold;" >Upgrade weapon</span>
-                <span>Costs 2,000 astrafolds</span>
+                <span id="wu-cost">Costs 2,000 astrafolds</span>
             </button>
         </div>
 
@@ -95,7 +95,7 @@
 
                 if (astrafolds.gte(w_cost)) {
                     astrafolds = astrafolds.sub(w_cost)
-                    w_cost = w_cost.pow(1.5)
+                    w_cost = w_cost.pow(2).round()
                     wc_exp = wc_exp.add(1)
 
                     if (img.src === "images/tier1-weapon.png") {
@@ -103,7 +103,7 @@
                     } else if (img.src === "images/tier2-weapon.png") {
                         img.src = "images/tier3-weapon.png";
                     }
-
+                    document.getElementById("wu-cost").innerHTML = "Costs " + w_cost + " astrafolds"
                     document.getElementById("astrafolds").innerHTML = astrafolds;
                 }
             }
