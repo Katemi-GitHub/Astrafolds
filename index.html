@@ -10,6 +10,7 @@
             </div>
             <span><img src="images/astrafold_icon.png"> Astrafolds: <span id="astrafolds" style="display: inline;">0</span></span>
             <span style="display: none;" id="afe_display"><img src="images/extractor_icon.png"> Extractors: <span id="afe" style="display: inline;">0</span></span>
+            <span style="display: none;" id="soul_display"><img src="images/soul.png"> Souls: <span id="souls" style="display: inline;">0</span></span>
         </div>
 
         <div class="box weapon-box" style="display: none;" id="weapon">
@@ -17,8 +18,9 @@
                 <span style="font-weight: bold; color: white; font-family: 'NormalFontBold';" >Weapon</span>
             </div>
             <img src="images/tier1-weapon.png" width="64" height="64" style="translate: 100%; display:block" id="weapon-img">
-            <hr>
             <span style="color: dimgrey;">This weapon may grant you power through your adventure</span>
+            <span style="color: rgb(170, 150, 50);">Your weapon is boosting by<span id="soul_boost" style="display: inline;">0</span>your astrafolds</span>
+            <hr>
             <button class="multiline-button" onclick="upgradeWeapon()">
                 <span style="font-weight: bold;" >Upgrade weapon</span>
                 <span id="wu-cost">Costs 2,000 astrafolds</span>
@@ -49,6 +51,8 @@
             var afe_cost = new Decimal(10);
             var w_cost = new Decimal (2000);
             var wc_exp = new Decimal(1);
+            var souls = new Decimal(0);
+            var soul_gen = new Decimal(0);
 
             function addAF(number) {
                 astrafolds = astrafolds.add(number)
@@ -80,6 +84,7 @@
             function buyWeapon() {
                 var e_par = document.getElementById("weapon-buy");
                 var weapon_box = document.getElementById("weapon");
+                var soul_d = document.getElementById("soul_display")
 
                 if (astrafolds.gte(200)) {
                     astrafolds = astrafolds.sub(200)
@@ -87,29 +92,41 @@
                     e_par.style.display = "none"
                     weapon_box.style.display = "block"
                     document.getElementById("astrafolds").innerHTML = astrafolds;
+
+                    if (soul_d.style.display === "none") {
+                        soul_d.style.display = "block"
+                        souls = new Decimal(0)
+                    }
                 }
+
+                document.getElementById("souls").innerHTML = souls;
             }
 
             function upgradeWeapon() {
-                var img = document.getElementById("weapon-img")
+                var w_img = document.getElementById("weapon-img")
 
                 if (astrafolds.gte(w_cost)) {
                     astrafolds = astrafolds.sub(w_cost)
                     w_cost = w_cost.pow(2).round()
                     wc_exp = wc_exp.add(1)
 
-                    if (img.src === "images/tier1-weapon.png") {
-                        img.src = "images/tier2-weapon.png";
-                    } else if (img.src === "images/tier2-weapon.png") {
-                        img.src = "images/tier3-weapon.png";
+                    if (w_img.src.endsWith("images/tier1-weapon.png")) {
+                        w_img.src = "images/tier2-weapon.png";
+                    } else if (w_img.src.endsWith("images/tier2-weapon.png")) {
+                        w_img.src = "images/tier3-weapon.png";
                     }
+
                     document.getElementById("wu-cost").innerHTML = "Costs " + w_cost + " astrafolds"
                     document.getElementById("astrafolds").innerHTML = astrafolds;
                 }
             }
 
             setInterval(function() {
-                astrafolds = astrafolds.add(af_extractors.mul(afe_mul.pow(wc_exp)));
+
+                souls = souls.add(af_extractors.mul(afe_mul.pow(wc_exp)).div(50).round());
+                astrafolds = astrafolds.add(af_extractors.mul(afe_mul.pow(wc_exp)).add(af_extractors.mul(afe_mul.pow(wc_exp)).div(50).round().div(100).round()));
+                document.getElementById("soul_boost").innerHTML = af_extractors.mul(afe_mul.pow(wc_exp)).div(50).round();
+                document.getElementById("souls").innerHTML = souls;
                 document.getElementById("astrafolds").innerHTML = astrafolds;
             }, 1000);
         </script>
